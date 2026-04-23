@@ -1,0 +1,42 @@
+---
+const { title = "Mi App" } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <h1>Catalogo de Comidas</h1>
+    </header>
+
+    <main class="container">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  html, body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+
+  header {
+    background: #222;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+</style>

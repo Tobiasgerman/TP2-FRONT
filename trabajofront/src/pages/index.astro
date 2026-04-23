@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { supabase } from "../lib/supabase";
+
+const { data, error } = await supabase.from('Comidas').select('*');
+
+console.log("DATA:", data);
+console.log("ERROR:", error);
+---	
+
+<Layout title="Inicio">
+  <h1>Conexión con Supabase lista</h1>
+
+  {error && <p>Error: {error.message}</p>}
+
+  {!error && data && (
+    <ul>
+      {data.map((task) => (
+        <li>{task.title}</li>
+      ))}
+    </ul>
+  )}
+</Layout>
