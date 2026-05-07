@@ -6,7 +6,8 @@ Catalogo Comidas
 2. Facundo Pirolo
 
 # Documentacion
-23/04 -- Commit inicial  
-23/04 -- Funciona conexion con Supabase y estructure supabase  
-30/04 -- Hicimos el login y register  
-01/05 -- Terminado  
+23/04 -- Commit inicial.  
+23/04 -- Funciona conexion con Supabase y estructure supabase.  
+30/04 -- Hicimos el login y register.  
+07/05 -- Hicimos la funcion de agregar comidas y editar estas mismas.
+
