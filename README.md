@@ -10,4 +10,6 @@ Catalogo Comidas
 23/04 -- Funciona conexion con Supabase y estructure supabase.  
 30/04 -- Hicimos el login y register.  
 07/05 -- Hicimos la funcion de agregar comidas y editar estas mismas.
-14/05 -- Terminamos tema branches y deploy
+14/05 -- Terminamos tema branches y deploy 
+
+Terminado.
