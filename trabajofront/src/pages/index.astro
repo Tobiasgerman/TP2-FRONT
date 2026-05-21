@@ -2,15 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Catálogo de Comidas">
+<Layout title="Catalogo de Comidas">
   <section class="container">
     <div class="top-bar">
       <div>
-        <h1> Catálogo de Comidas</h1>
-        <p>Agregá y organizá tus comidas favoritas.</p>
+        <h1>Catalogo de Comidas</h1>
+        <p>Agrega y organiza tus comidas favoritas.</p>
       </div>
 
-      <button id="logoutBtn">Cerrar sesión</button>
+      <button id="logoutBtn">Cerrar sesion</button>
     </div>
 
     <form id="foodForm" class="food-form">
@@ -21,10 +21,10 @@ import Layout from "../layouts/Layout.astro";
       <input
         type="text"
         id="category"
-        placeholder="Categoría. Ej: Postre, Pasta, Argentina"
+        placeholder="Categoria. Ej: Postre, Pasta, Argentina"
       />
 
-      <textarea id="description" placeholder="Descripción"></textarea>
+      <textarea id="description" placeholder="Descripcion"></textarea>
 
       <button type="submit">Guardar comida</button>
 
@@ -50,6 +50,15 @@ import Layout from "../layouts/Layout.astro";
   const categoryInput = document.getElementById("category");
   const descriptionInput = document.getElementById("description");
 
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
   async function getUser() {
     const { data } = await supabase.auth.getUser();
 
@@ -72,89 +81,31 @@ import Layout from "../layouts/Layout.astro";
       .order("created_at", { ascending: false });
 
     if (error) {
-      foodsList.innerHTML = `<p>Error al cargar comidas: ${error.message}</p>`;
+      foodsList.innerHTML = `<p>Error al cargar comidas: ${escapeHtml(error.message)}</p>`;
       return;
     }
 
     if (!data || data.length === 0) {
-      foodsList.innerHTML = `<p>Todavía no agregaste comidas.</p>`;
+      foodsList.innerHTML = `<p>Todavia no agregaste comidas.</p>`;
       return;
     }
 
     foodsList.innerHTML = data
-  .map(
-    (food) => `
-      <article class="food-card">
-        <span class="food-category">${food.category || "Sin categoría"}</span>
-        <h3>${food.title}</h3>
-        <p>${food.description || "Sin descripción"}</p>
+      .map(
+        (food) => `
+          <article class="food-card">
+            <span class="food-category">${escapeHtml(food.category || "Sin categoria")}</span>
+            <h3>${escapeHtml(food.title)}</h3>
+            <p>${escapeHtml(food.description || "Sin descripcion")}</p>
 
-        <a class="edit-link" href="/update/${food.id}">
-  Editar comida
-</a>
-      </article>
-    `
-  )
-  .join("");
+            <a class="edit-link" href="/update/${encodeURIComponent(food.id)}">
+              Editar comida
+            </a>
+          </article>
+        `
+      )
+      .join("");
   }
-
-  document.addEventListener("click", async (e) => {
-    const target = e.target;
-
-    if (!(target instanceof HTMLButtonElement)) return;
-
-    const foodId = target.dataset.id;
-    if (!foodId) return;
-
-    const viewBox = document.getElementById(`view-${foodId}`);
-    const editBox = document.getElementById(`edit-${foodId}`);
-
-    if (target.classList.contains("edit-btn")) {
-      viewBox?.classList.add("hidden");
-      editBox?.classList.remove("hidden");
-      return;
-    }
-
-    if (target.classList.contains("cancel-btn")) {
-      editBox?.classList.add("hidden");
-      viewBox?.classList.remove("hidden");
-      return;
-    }
-
-    if (!target.classList.contains("save-btn")) return;
-
-    const title = document.getElementById(`title-${foodId}`);
-    const category = document.getElementById(`category-${foodId}`);
-    const description = document.getElementById(`description-${foodId}`);
-
-    if (
-      !(title instanceof HTMLInputElement) ||
-      !(category instanceof HTMLInputElement) ||
-      !(description instanceof HTMLTextAreaElement)
-    ) {
-      return;
-    }
-
-    const user = await getUser();
-    if (!user) return;
-
-    const { error } = await supabase
-      .from("Comidas")
-      .update({
-        title: title.value,
-        category: category.value,
-        description: description.value,
-      })
-      .eq("id", foodId)
-      .eq("user_id", user.id);
-
-    if (error) {
-      alert("Error al editar: " + error.message);
-      return;
-    }
-
-    await loadFoods();
-  });
 
   if (logoutBtn instanceof HTMLButtonElement) {
     logoutBtn.addEventListener("click", async () => {
@@ -283,15 +234,15 @@ import Layout from "../layouts/Layout.astro";
   }
 
   .food-card h3 {
-    margin: 8px 0 8px;
+    margin: 8px 0;
     color: #ea580c;
     font-size: 22px;
   }
 
   .food-card p {
-  font-size: 24px;
-  line-height: 1.5;
-}
+    font-size: 16px;
+    line-height: 1.5;
+  }
 
   .food-category {
     display: inline-block;
@@ -299,53 +250,14 @@ import Layout from "../layouts/Layout.astro";
     color: #c2410c;
     padding: 6px 10px;
     border-radius: 999px;
-    font-size: 100px;
+    font-size: 13px;
     font-weight: bold;
   }
 
-  .card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .card-actions button {
-    flex: 1;
-  }
-
-  .edit-btn,
-  .save-btn {
-    background: #ea580c;
-  }
-
-  .cancel-btn {
-    background: #9ca3af;
-  }
-
-  .cancel-btn:hover {
-    background: #6b7280;
-  }
-
-  .food-edit {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .food-edit label {
+  .edit-link {
+    color: #ea580c;
     font-weight: bold;
-    color: #374151;
-    font-size: 14px;
-  }
-
-  .edit-input,
-  .edit-textarea {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .hidden {
-    display: none;
+    text-decoration: none;
   }
 
   #message {

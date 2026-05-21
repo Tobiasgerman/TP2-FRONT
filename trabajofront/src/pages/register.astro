@@ -5,13 +5,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro | Catálogo de Comidas</title>
+    <title>Registro | Catalogo de Comidas</title>
   </head>
 
   <body>
     <main class="container">
       <section class="register-box">
-        <h1>Catálogo de Comidas</h1>
+        <h1>Catalogo de Comidas</h1>
         <h2>Crear cuenta</h2>
 
         <p>Registrate para guardar y organizar tus comidas favoritas.</p>
@@ -25,11 +25,12 @@
             required
           />
 
-          <label for="password">Contraseña</label>
+          <label for="password">Contrasena</label>
           <input
             type="password"
             id="password"
-            placeholder="Mínimo 6 caracteres"
+            placeholder="Minimo 6 caracteres"
+            minlength="6"
             required
           />
 
@@ -39,55 +40,52 @@
         </form>
 
         <p class="login-link">
-          ¿Ya tenés cuenta?
-          <a href="/login">Iniciar sesión</a>
+          Ya tenes cuenta?
+          <a href="/login">Iniciar sesion</a>
         </p>
       </section>
     </main>
 
-  <script>
-  import { supabase } from '../lib/supabase.js'
+    <script>
+      import { supabase } from "../lib/supabase.js";
 
-  const form = document.getElementById('registerForm')
-  const message = document.getElementById('message')
-  const emailInput = document.getElementById('email')
-  const passwordInput = document.getElementById('password')
+      const form = document.getElementById("registerForm");
+      const message = document.getElementById("message");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
 
-  if (
-    form instanceof HTMLFormElement &&
-    message instanceof HTMLElement &&
-    emailInput instanceof HTMLInputElement &&
-    passwordInput instanceof HTMLInputElement
-  ) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault()
+      if (
+        form instanceof HTMLFormElement &&
+        message instanceof HTMLElement &&
+        emailInput instanceof HTMLInputElement &&
+        passwordInput instanceof HTMLInputElement
+      ) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-      const email = emailInput.value
-      const password = passwordInput.value
+          const email = emailInput.value;
+          const password = passwordInput.value;
 
-      message.textContent = 'Creando cuenta...'
+          message.textContent = "Creando cuenta...";
 
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      })
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+          });
 
-      console.log('DATA:', data)
-      console.log('ERROR:', error)
+          if (error) {
+            message.textContent = "Error: " + error.message;
+            return;
+          }
 
-      if (error) {
-        message.textContent = 'Error: ' + error.message
-        return
+          message.textContent = "Cuenta creada correctamente. Redirigiendo...";
+
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
+        });
       }
-
-      message.textContent = 'Cuenta creada correctamente. Redirigiendo...'
-
-      setTimeout(() => {
-        window.location.href = '/login'
-      }, 1500)
-    })
-  }
-</script>
+    </script>
   </body>
 </html>
 
