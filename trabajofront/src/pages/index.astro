@@ -40,6 +40,7 @@ import Layout from "../layouts/Layout.astro";
 
 <script>
   import { supabase } from "../lib/supabase";
+  import { buildFoodCard, isValidFoodInput, normalizeFoodInput } from "../lib/food";
 
   const logoutBtn = document.getElementById("logoutBtn");
   const foodForm = document.getElementById("foodForm");
@@ -49,15 +50,6 @@ import Layout from "../layouts/Layout.astro";
   const titleInput = document.getElementById("title");
   const categoryInput = document.getElementById("category");
   const descriptionInput = document.getElementById("description");
-
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
 
   async function getUser() {
     const { data } = await supabase.auth.getUser();
@@ -81,7 +73,7 @@ import Layout from "../layouts/Layout.astro";
       .order("created_at", { ascending: false });
 
     if (error) {
-      foodsList.innerHTML = `<p>Error al cargar comidas: ${escapeHtml(error.message)}</p>`;
+      foodsList.textContent = `Error al cargar comidas: ${error.message}`;
       return;
     }
 
@@ -90,21 +82,7 @@ import Layout from "../layouts/Layout.astro";
       return;
     }
 
-    foodsList.innerHTML = data
-      .map(
-        (food) => `
-          <article class="food-card">
-            <span class="food-category">${escapeHtml(food.category || "Sin categoria")}</span>
-            <h3>${escapeHtml(food.title)}</h3>
-            <p>${escapeHtml(food.description || "Sin descripcion")}</p>
-
-            <a class="edit-link" href="/update/${encodeURIComponent(food.id)}">
-              Editar comida
-            </a>
-          </article>
-        `
-      )
-      .join("");
+    foodsList.innerHTML = data.map((food) => buildFoodCard(food)).join("");
   }
 
   if (logoutBtn instanceof HTMLButtonElement) {
@@ -129,10 +107,19 @@ import Layout from "../layouts/Layout.astro";
 
       message.textContent = "Guardando comida...";
 
-      const { error } = await supabase.from("Comidas").insert({
+      const foodInput = normalizeFoodInput({
         title: titleInput.value,
         category: categoryInput.value,
         description: descriptionInput.value,
+      });
+
+      if (!isValidFoodInput(foodInput)) {
+        message.textContent = "El nombre de la comida es obligatorio.";
+        return;
+      }
+
+      const { error } = await supabase.from("Comidas").insert({
+        ...foodInput,
         user_id: user.id,
       });
 

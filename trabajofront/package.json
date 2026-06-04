@@ -6,14 +6,27 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "astro": "astro",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "cross-env ASTRO_TELEMETRY_DISABLED=1 playwright test",
+    "quality": "npm run lint && npm run test && npm run test:e2e && npm run build"
   },
   "dependencies": {
     "@astrojs/vercel": "^10.0.7",
     "@supabase/supabase-js": "^2.105.1",
     "astro": "^6.1.9"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "vitest": "^4.1.8"
   }
 }
