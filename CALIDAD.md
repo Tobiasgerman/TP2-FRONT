@@ -24,6 +24,10 @@ Se considero Jest para unit tests, pero Vitest requiere menos configuracion en e
 - Unitario: `buildFoodCard` genera una tarjeta segura para el catalogo y codifica el id en el link de edicion.
 - E2E: el usuario inicia sesion, crea una comida y verifica que aparece en el listado con categoria y descripcion.
 
+## Cobertura
+
+Se agrego el script `npm run test:coverage` con Vitest y V8. El reporte actual sobre `src/lib/food.js` da 100% de statements, 100% de functions, 100% de lines y 80% de branches. Esto supera el objetivo opcional de 60% de cobertura sobre funciones de negocio.
+
 ## Casos de uso criticos
 
 El flujo mas importante es login -> crear comida -> ver comida en el catalogo, porque representa el valor central de la aplicacion. Tambien se priorizo el sanitizado de datos porque el usuario escribe texto libre en titulo, categoria y descripcion. Si esos datos se renderizan sin control, pueden romper el HTML o abrir una puerta a XSS.

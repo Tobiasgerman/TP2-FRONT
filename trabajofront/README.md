@@ -1,46 +1,40 @@
-# Astro Starter Kit: Basics
+# Catalogo de Comidas
+
+Aplicacion web hecha con Astro y Supabase para registrar, listar y editar comidas favoritas por usuario.
+
+Este directorio contiene el frontend del proyecto. La documentacion del TP de Calidad y Automatizacion esta en el README de la raiz y en `../CALIDAD.md`.
+
+## Requisitos
+
+- Node.js 22.12.0 o superior.
+- Variables de entorno de Supabase en `.env`.
+
+```env
+PUBLIC_SUPABASE_URL=<url-de-supabase>
+PUBLIC_SUPABASE_ANON_KEY=<anon-key-de-supabase>
+```
+
+## Comandos
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev
+npm run lint
+npm run test
+npm run test:e2e
+npm run build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Calidad
 
-## 🚀 Project Structure
+- `npm run lint`: ejecuta ESLint.
+- `npm run test`: ejecuta tests unitarios con Vitest.
+- `npm run test:coverage`: genera reporte de cobertura.
+- `npm run test:e2e`: ejecuta Playwright con `PUBLIC_E2E_MODE=true` y mock de Supabase.
+- `npm run quality`: corre lint, unitarios, E2E y build.
 
-Inside of your Astro project, you'll see the following folders and files:
+Si Playwright no tiene descargado su Chromium local, en una maquina con Google Chrome instalado se puede validar el E2E con:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```sh
+npx cross-env PW_USE_SYSTEM_CHROME=true playwright test
 ```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

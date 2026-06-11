@@ -9,9 +9,11 @@ Aplicacion web hecha con Astro y Supabase para registrar, listar y editar comida
 
 ## URL de produccion
 
-Completar con la URL final de Vercel cuando el proyecto quede vinculado:
+Pendiente de completar con la URL final de Vercel cuando el proyecto quede vinculado:
 
 `https://<proyecto>.vercel.app`
+
+Este punto es requisito de la consigna. Antes de la entrega, copiar aca la URL real que devuelve Vercel en el deploy de produccion.
 
 ## Proyecto
 
@@ -84,3 +86,15 @@ Secrets necesarios en GitHub:
 ## Documentacion de calidad
 
 Ver [CALIDAD.md](./CALIDAD.md).
+
+## Checklist TP Calidad y Automatizacion
+
+- Pipeline de GitHub Actions en `.github/workflows/ci-cd.yml`.
+- Lint, tests unitarios, test E2E y build dentro del pipeline.
+- Deploy automatico a Vercel condicionado a push en `main` y pasos previos exitosos.
+- Tests unitarios con Vitest en `trabajofront/tests/unit`.
+- Test E2E con Playwright en `trabajofront/tests/e2e`.
+- Documentacion de calidad en `CALIDAD.md`.
+- Template de Pull Request con checklist de revision en `.github/pull_request_template.md`.
+- Flujo de issues, PRs, reviews y ramas documentado en este README.
+- URL final de produccion pendiente de completar cuando Vercel quede vinculado.
