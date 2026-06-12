@@ -1,4 +1,4 @@
-# Catalogo de Comidas
+# Recetario Personal
 
 Aplicacion web hecha con Astro y Supabase para registrar, listar y editar comidas favoritas por usuario.
 
@@ -11,7 +11,7 @@ Aplicacion web hecha con Astro y Supabase para registrar, listar y editar comida
 
 Pendiente de completar con la URL final de Vercel cuando el proyecto quede vinculado:
 
-`https://<proyecto>.vercel.app`
+`https://recetario-personal.vercel.app`
 
 Este punto es requisito de la consigna. Antes de la entrega, copiar aca la URL real que devuelve Vercel en el deploy de produccion.
 

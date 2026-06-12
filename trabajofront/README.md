@@ -1,4 +1,4 @@
-# Catalogo de Comidas
+# Recetario Personal
 
 Aplicacion web hecha con Astro y Supabase para registrar, listar y editar comidas favoritas por usuario.
 

@@ -5,16 +5,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login | Catalogo de Comidas</title>
+    <title>Login | Recetario Personal</title>
   </head>
 
   <body>
     <main class="container">
       <section class="login-box">
-        <h1>Catalogo de Comidas</h1>
+        <h1>Recetario Personal</h1>
         <h2>Iniciar sesion</h2>
 
-        <p>Ingresa para administrar tu catalogo personal.</p>
+        <p>Ingresa para administrar tu recetario personal.</p>
 
         <form id="loginForm">
           <label for="email">Email</label>
@@ -80,7 +80,7 @@
           message.textContent = "Ingreso correcto. Redirigiendo...";
 
           setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = "/dashboard";
           }, 1500);
         });
       }

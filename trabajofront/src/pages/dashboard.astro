@@ -1,0 +1,253 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Recetario Personal">
+  <section class="container">
+    <div class="top-bar">
+      <div>
+        <h1>Recetario Personal</h1>
+        <p>Agrega y organiza tus comidas favoritas.</p>
+      </div>
+
+      <button id="logoutBtn">Cerrar sesion</button>
+    </div>
+
+    <form id="foodForm" class="food-form">
+      <h2>Agregar comida</h2>
+
+      <input type="text" id="title" placeholder="Nombre de la comida" required />
+
+      <input
+        type="text"
+        id="category"
+        placeholder="Categoria. Ej: Postre, Pasta, Argentina"
+      />
+
+      <textarea id="description" placeholder="Descripcion"></textarea>
+
+      <button type="submit">Guardar comida</button>
+
+      <p id="message"></p>
+    </form>
+
+    <section>
+      <h2>Mis comidas</h2>
+      <div id="foodsList" class="foods-list"></div>
+    </section>
+  </section>
+</Layout>
+
+<script>
+  import { supabase } from "../lib/supabase";
+  import { buildFoodCard, isValidFoodInput, normalizeFoodInput } from "../lib/food";
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  const foodForm = document.getElementById("foodForm");
+  const foodsList = document.getElementById("foodsList");
+  const message = document.getElementById("message");
+
+  const titleInput = document.getElementById("title");
+  const categoryInput = document.getElementById("category");
+  const descriptionInput = document.getElementById("description");
+
+  async function getUser() {
+    const { data } = await supabase.auth.getUser();
+
+    if (!data.user) {
+      window.location.href = "/login";
+      return null;
+    }
+
+    return data.user;
+  }
+
+  async function loadFoods() {
+    const user = await getUser();
+    if (!user || !foodsList) return;
+
+    const { data, error } = await supabase
+      .from("Comidas")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      foodsList.textContent = `Error al cargar comidas: ${error.message}`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      foodsList.innerHTML = `<p>Todavia no agregaste comidas.</p>`;
+      return;
+    }
+
+    foodsList.innerHTML = data.map((food) => buildFoodCard(food)).join("");
+  }
+
+  if (logoutBtn instanceof HTMLButtonElement) {
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "/login";
+    });
+  }
+
+  if (
+    foodForm instanceof HTMLFormElement &&
+    message instanceof HTMLElement &&
+    titleInput instanceof HTMLInputElement &&
+    categoryInput instanceof HTMLInputElement &&
+    descriptionInput instanceof HTMLTextAreaElement
+  ) {
+    foodForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const user = await getUser();
+      if (!user) return;
+
+      message.textContent = "Guardando comida...";
+
+      const foodInput = normalizeFoodInput({
+        title: titleInput.value,
+        category: categoryInput.value,
+        description: descriptionInput.value,
+      });
+
+      if (!isValidFoodInput(foodInput)) {
+        message.textContent = "El nombre de la comida es obligatorio.";
+        return;
+      }
+
+      const { error } = await supabase.from("Comidas").insert({
+        ...foodInput,
+        user_id: user.id,
+      });
+
+      if (error) {
+        message.textContent = "Error: " + error.message;
+        return;
+      }
+
+      message.textContent = "Comida guardada correctamente.";
+
+      foodForm.reset();
+      loadFoods();
+    });
+  }
+
+  loadFoods();
+</script>
+
+<style>
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    color: #ea580c;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    color: #111827;
+    font-size: 30px;
+  }
+
+  p {
+    color: #6b7280;
+  }
+
+  .food-form {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  input,
+  textarea {
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+  }
+
+  textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  button {
+    border: none;
+    background: #ea580c;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background: #c2410c;
+  }
+
+  .foods-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .food-card {
+    background: white;
+    border: 1px solid #fed7aa;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .food-card h3 {
+    margin: 8px 0;
+    color: #ea580c;
+    font-size: 22px;
+  }
+
+  .food-card p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .food-category {
+    display: inline-block;
+    background: #ffedd5;
+    color: #c2410c;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .edit-link {
+    color: #ea580c;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  #message {
+    font-weight: bold;
+  }
+</style>

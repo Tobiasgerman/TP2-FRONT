@@ -7,7 +7,7 @@ test("usuario inicia sesion, crea una comida y ve el catalogo", async ({ page })
   await page.getByLabel("Contrasena").fill("password123");
   await page.getByRole("button", { name: "Ingresar" }).click();
 
-  await expect(page.getByRole("heading", { name: "Catalogo de Comidas" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Recetario Personal" })).toBeVisible();
 
   await page.getByPlaceholder("Nombre de la comida").fill("Empanadas");
   await page
