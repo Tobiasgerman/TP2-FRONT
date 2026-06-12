@@ -38,3 +38,4 @@ Si Playwright no tiene descargado su Chromium local, en una maquina con Google C
 ```sh
 npx cross-env PW_USE_SYSTEM_CHROME=true playwright test
 ```
+.
