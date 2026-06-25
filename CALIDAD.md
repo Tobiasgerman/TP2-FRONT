@@ -72,8 +72,9 @@ Los E2E no usan Supabase real. Playwright levanta la app con `PUBLIC_E2E_MODE=tr
 - El E2E actual cubre el flujo principal, pero todavia no cubre registro, logout ni edicion.
 - El mock de Supabase existe solo para E2E y cubre las operaciones que usa la app hoy. Si se agregan mas consultas, habra que extenderlo.
 - La cobertura de tests esta concentrada en `src/lib/food.js`, que contiene funciones de negocio puras. Las paginas Astro se validan indirectamente con Playwright.
-- `npm audit` reporta 6 vulnerabilidades en dependencias transitivas. No se ejecuto `npm audit fix --force` porque puede introducir cambios incompatibles; queda como deuda revisar actualizaciones de Astro/Vercel con mas tiempo.
-- La URL final de produccion debe completarse en el README cuando el proyecto quede vinculado a Vercel.
+- `npm audit` reporta 10 vulnerabilidades en dependencias transitivas. No se ejecuto `npm audit fix --force` porque puede introducir cambios incompatibles; queda como deuda revisar actualizaciones de Astro/Vercel con mas tiempo.
+- La API publica de GitHub no muestra issues ni Pull Requests en el repositorio al 25 de junio de 2026. Esa parte de la consigna no se resuelve con codigo: el equipo debe crear issues reales, trabajar en ramas y usar Pull Requests revisados por el otro integrante.
+- Las ejecuciones publicas de GitHub Actions revisadas el 25 de junio de 2026 figuran como fallidas. Lint, tests y build estan configurados en el workflow; queda verificar en GitHub que los secrets de Vercel esten correctamente cargados para que el deploy complete.
 
 ## Uso de IA
 

@@ -9,11 +9,9 @@ Aplicacion web hecha con Astro y Supabase para registrar, listar y editar comida
 
 ## URL de produccion
 
-Pendiente de completar con la URL final de Vercel cuando el proyecto quede vinculado:
+[https://tp-2-front.vercel.app](https://tp-2-front.vercel.app)
 
-`https://recetario-personal.vercel.app`
-
-Este punto es requisito de la consigna. Antes de la entrega, copiar aca la URL real que devuelve Vercel en el deploy de produccion.
+La URL fue verificada el 25 de junio de 2026 y responde correctamente. La pagina inicial redirige a `/login`.
 
 ## Proyecto
 
@@ -97,4 +95,8 @@ Ver [CALIDAD.md](./CALIDAD.md).
 - Documentacion de calidad en `CALIDAD.md`.
 - Template de Pull Request con checklist de revision en `.github/pull_request_template.md`.
 - Flujo de issues, PRs, reviews y ramas documentado en este README.
-- URL final de produccion pendiente de completar cuando Vercel quede vinculado.
+- URL final de produccion documentada.
+
+## Pendiente fuera del codigo
+
+La API publica de GitHub no muestra issues ni Pull Requests en el repositorio al 25 de junio de 2026. Para completar esa parte de la consigna, el equipo debe crear issues reales, abrir Pull Requests desde ramas con la convencion documentada y dejar revisiones concretas antes del merge.
